@@ -50,12 +50,12 @@ export default function Scene() {
             {/* Postprocessing */}
             <EffectComposer disableNormalPass>
                 <Bloom intensity={5} />
-                {/*<DepthOfField*/}
-                {/*     target={[0, 0, 13]}*/}
-                {/*    focalLength={0.3}*/}
-                {/*    bokehScale={15}*/}
-                {/*     height={700}*/}
-                {/*/>*/}
+                <DepthOfField
+                     target={[0, 0, 13]}
+                    focalLength={0.3}
+                    bokehScale={5}
+                     height={700}
+                />
             </EffectComposer>
 
             <CameraRig />

@@ -16,7 +16,7 @@ export default function FixedChrome() {
         if (animating) return;
 
         setAnimating(true);
-        setCursorVisible(false);
+        setCursorVisible(true);
 
         let li = 0;
         let ri = 0;
@@ -46,7 +46,7 @@ export default function FixedChrome() {
         if (animating) return;
 
         setAnimating(true);
-        setCursorVisible(false);
+        setCursorVisible(true);
 
         let r = RIGHT.length; // keep at least 1 character
         let l = LEFT.length;
@@ -66,6 +66,7 @@ export default function FixedChrome() {
                         clearInterval(retractLeft);
                         setLeftText("\\");
                         setRightText("k");
+                        setCursorVisible(false);
                         setAnimating(false);
                     }
                 }, 60);
