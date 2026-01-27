@@ -87,7 +87,7 @@ export default function ScrollCounter({ sections }: Props) {
     }, []);
 
     return (
-        <div className="pointer-events-none fixed right-6 top-1/2 z-50 -translate-y-1/2 flex flex-col items-baseline gap-1 mix-blend-difference">
+        <div className="pointer-events-none fixed right-6 bottom-6 z-50 translate-y-0 flex flex-col items-baseline gap-1 mix-blend-difference">
             {/* Current page */}
             <div className="relative min-h-[3rem] overflow-hidden">
                 <div

@@ -1,5 +1,6 @@
-import HeroCanvas from "@/components/three/HeroCanvas";
-import LoaderOverlay from "@/components/three/LoaderOverlay";
+import HeroCanvas from "@/components/three/hero/HeroCanvas";
+import LoaderOverlay from "@/components/ui/LoaderOverlay";
+import SectionBackground from "@/components/three/section/SectionBackground";
 
 export default function Home() {
   return (
@@ -12,31 +13,34 @@ export default function Home() {
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/40 via-zinc-900/30 to-black/50" />
           </div>
           <div className="pointer-events-none mx-auto flex min-h-screen max-w-7xl items-center justify-center px-6">
-            <h1 className="text-center text-6xl font-semibold tracking-[0.4em]">
-              VASILEIOS
-              <br />
-              KEFALAS
-            </h1>
+            {/*<h1 className="text-center text-6xl font-semibold tracking-[0.4em]">*/}
+            {/*  VASILEIOS*/}
+            {/*  <br />*/}
+            {/*  KEFALAS*/}
+            {/*</h1>*/}
           </div>
         </section>
 
         {/* About */}
-        <section id="about" className="min-h-screen px-6 py-24">
+        <section id="about" className="relative min-h-screen px-6 py-24 overflow-hidden">
+            <SectionBackground />
           <div className="mx-auto max-w-3xl">
             <h2 className="text-2xl tracking-[0.2em]">ABOUT</h2>
           </div>
         </section>
 
         {/* Work */}
-        <section id="work" className="min-h-screen px-6 py-24">
-          <div className="mx-auto max-w-3xl">
+        <section id="work" className="relative min-h-screen px-6 py-24 overflow-hidden">
+          <SectionBackground />
+          <div className="relative mx-auto max-w-3xl">
             <h2 className="text-2xl tracking-[0.2em]">WORK</h2>
           </div>
         </section>
 
         {/* Contact */}
-        <section id="contact" className="min-h-screen px-6 py-24">
-          <div className="mx-auto max-w-3xl">
+        <section id="contact" className="relative min-h-screen px-6 py-24 overflow-hidden">
+          <SectionBackground />
+          <div className="relative mx-auto max-w-3xl">
             <h2 className="text-2xl tracking-[0.2em]">CONTACT</h2>
           </div>
         </section>
