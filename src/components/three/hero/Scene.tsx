@@ -1,9 +1,7 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
-import {
-    MeshReflectorMaterial,
-} from "@react-three/drei";
+import {useFrame } from "@react-three/fiber";
+import { MeshReflectorMaterial, BakeShadows} from "@react-three/drei";
 import { EffectComposer, Bloom, DepthOfField } from "@react-three/postprocessing";
 import { easing } from "maath";
 import { Instances, Computers } from "./Computers";
@@ -27,7 +25,7 @@ export default function Scene() {
             {/* Main scene */}
             <group position={[0, -1, 0]}>
                 <Instances>
-                    <Computers scale={0.6} />
+                    <Computers scale={0.35} />
                 </Instances>
 
                 <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
@@ -58,7 +56,8 @@ export default function Scene() {
                 />
             </EffectComposer>
 
-            <CameraRig />
+            <CameraRig/>
+            <BakeShadows />
         </>
     );
 }
