@@ -1,6 +1,5 @@
 import HeroCanvas from "@/components/three/hero/HeroCanvas";
 import LoaderOverlay from "@/components/ui/LoaderOverlay";
-import SectionBackground from "@/components/three/section/SectionBackground";
 
 export default function Home() {
   return (
@@ -22,28 +21,19 @@ export default function Home() {
         </section>
 
         {/* About */}
-        <section id="about" className="relative min-h-screen px-6 py-24 overflow-hidden">
-            <SectionBackground />
+        <section id="about" className="relative min-h-screen px-6 py-24 overflow-hidden bg-black">
           <div className="mx-auto max-w-3xl">
-            <h2 className="text-2xl tracking-[0.2em]">ABOUT</h2>
+            <h2 className="text-2xl tracking-[0.2em]">\ ABOUT</h2>
           </div>
         </section>
 
         {/* Work */}
-        <section id="work" className="relative min-h-screen px-6 py-24 overflow-hidden">
-          <SectionBackground />
+        <section id="work" className="relative min-h-screen px-6 py-24 overflow-hidden bg-black">
           <div className="relative mx-auto max-w-3xl">
-            <h2 className="text-2xl tracking-[0.2em]">WORK</h2>
+            <h2 className="text-2xl tracking-[0.2em]">\ WORK</h2>
           </div>
         </section>
-
-        {/* Contact */}
-        <section id="contact" className="relative min-h-screen px-6 py-24 overflow-hidden">
-          <SectionBackground />
-          <div className="relative mx-auto max-w-3xl">
-            <h2 className="text-2xl tracking-[0.2em]">CONTACT</h2>
-          </div>
-        </section>
+          
       </main>
   );
 }
