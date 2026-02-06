@@ -1,7 +1,6 @@
 "use client";
-"use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const LEFT = "vasileios";
 const RIGHT = "kefalas";
@@ -11,12 +10,14 @@ export default function FixedChrome() {
     const [rightText, setRightText] = useState("k");
     const [cursorVisible, setCursorVisible] = useState(false);
     const [animating, setAnimating] = useState(false);
+    const isExpandedRef = useRef(false);
 
     const expand = () => {
         if (animating) return;
 
         setAnimating(true);
         setCursorVisible(true);
+        isExpandedRef.current = true;
 
         let li = 0;
         let ri = 0;
@@ -47,6 +48,7 @@ export default function FixedChrome() {
 
         setAnimating(true);
         setCursorVisible(true);
+        isExpandedRef.current = false;
 
         let r = RIGHT.length; // keep at least 1 character
         let l = LEFT.length;
@@ -73,6 +75,21 @@ export default function FixedChrome() {
             }
         }, 60);
     };
+
+    useEffect(() => {
+        const onScroll = () => {
+            if (window.scrollY > 0) {
+                if (isExpandedRef.current) retract();
+            } else {
+                if (!isExpandedRef.current) expand();
+            }
+        };
+
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
 
     return (
         <div className="pointer-events-none fixed inset-0 z-50">
@@ -112,7 +129,11 @@ export default function FixedChrome() {
 
                 {/* Contact */}
                 <div className="pointer-events-auto flex items-center gap-3 text-xs tracking-[0.2em] text-white/80">
-                    <a href="#contact" className="hover:text-white transition">
+                    <a
+                        href="#contact"
+                        className="hover:text-white transition glitch-hover"
+                        data-text="CONTACT"
+                    >
                         CONTACT
                     </a>
                     <span className="text-white/30">/</span>
@@ -120,7 +141,8 @@ export default function FixedChrome() {
                         href=""
                         target="_blank"
                         rel="noreferrer"
-                        className="hover:text-white transition"
+                        className="hover:text-white transition glitch-hover"
+                        data-text="LINKEDIN"
                     >
                         Linkedin
                     </a>
@@ -129,7 +151,8 @@ export default function FixedChrome() {
                         href=""
                         target="_blank"
                         rel="noreferrer"
-                        className="hover:text-white transition"
+                        className="hover:text-white transition glitch-hover"
+                        data-text="GITHUB"
                     >
                         Github
                     </a>

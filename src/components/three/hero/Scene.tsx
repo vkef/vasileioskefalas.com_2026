@@ -38,7 +38,7 @@ export default function Scene() {
                         roughness={1}
                         depthScale={1.2}
                         minDepthThreshold={0.4}
-                        maxDepthThreshold={1.4}
+                        maxDepthThreshold={0.8}
                         color="#202020"
                         metalness={0.8}
                     />
@@ -47,13 +47,8 @@ export default function Scene() {
 
             {/* Postprocessing */}
             <EffectComposer disableNormalPass>
-                <Bloom intensity={5} />
-                <DepthOfField
-                     target={[0, 0, 13]}
-                    focalLength={0.3}
-                    bokehScale={5}
-                     height={700}
-                />
+                <Bloom luminanceThreshold={0} mipmapBlur luminanceSmoothing={0.0} intensity={0} />
+                <DepthOfField target={[0, 0, 13]} focalLength={0.3} bokehScale={2} height={700} />
             </EffectComposer>
 
             <CameraRig/>
@@ -64,16 +59,7 @@ export default function Scene() {
 
 function CameraRig() {
     useFrame((state, delta) => {
-        easing.damp3(
-            state.camera.position,
-            [
-                -1 + (state.pointer.x * state.viewport.width) / 3,
-                (1 + state.pointer.y) / 2,
-                5.5,
-            ],
-            0.5,
-            delta
-        );
-        state.camera.lookAt(0, 0, 0);
-    });
+        easing.damp3(state.camera.position, [-1 + (state.pointer.x * state.viewport.width) / 3, (1 + state.pointer.y) / 2, 5.5], 0.5, delta)
+        state.camera.lookAt(0, 0, 0)
+    })
 }

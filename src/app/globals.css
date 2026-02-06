@@ -47,3 +47,16 @@ input:focus {
   outline: none;
   box-shadow: none !important;
 }
+
+/* Hide native cursor everywhere */
+* {
+  cursor: none !important;
+}
+
+html, body {
+  cursor: none !important;
+}
+
+canvas {
+  cursor: none !important;
+}
