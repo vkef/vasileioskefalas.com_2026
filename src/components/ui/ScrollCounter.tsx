@@ -86,6 +86,8 @@ export default function ScrollCounter({ sections }: Props) {
         return () => io.disconnect();
     }, []);
 
+    const TOTAL_PAGES = 3;
+
     return (
         <div className="pointer-events-none fixed right-6 bottom-6 z-50 translate-y-0 flex flex-col items-baseline gap-1 mix-blend-difference">
             {/* Current page */}
@@ -101,7 +103,7 @@ export default function ScrollCounter({ sections }: Props) {
             {/* Total pages */}
             <div className="overflow-hidden pl-2">
                 <div className="text-xs tracking-[0.25em] text-white/80 tabular-nums">
-                    {pad3(sections.length)}
+                    {pad3(TOTAL_PAGES)}
                 </div>
             </div>
         </div>

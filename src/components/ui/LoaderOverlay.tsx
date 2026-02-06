@@ -1,96 +1,139 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { UAParser } from "ua-parser-js";
+import { useDevToolsOpen } from "@/hooks/useDevToolsOpen";
+import { runConsoleGreeting } from "@/utils/consoleGreeting";
 
-type Props = {
-    oncePerSession?: boolean;
-    durationMs?: number;
-};
+function getClientInfo() {
+  if (typeof window === "undefined") return null;
 
-const LOADER_TEXT = "loading_";
-const CURSOR = "_";
+  const parser = new UAParser();
+  const result = parser.getResult();
 
-export default function LoaderOverlay({
-                                          oncePerSession = true,
-                                          durationMs = 3000,
-                                      }: Props) {
+  return [
+    `BROWSER        : ${result.browser.name ?? "Unknown"} ${result.browser.version ?? ""}`,
+    `OS             : ${result.os.name ?? "Unknown"} ${result.os.version ?? ""}`,
+    `LANGUAGE       : ${navigator.language}`,
+    `TIMEZONE       : ${Intl.DateTimeFormat().resolvedOptions().timeZone}`,
+    `RESOLUTION     : ${window.screen.width}x${window.screen.height}`,
+  ];
+}
+
+const STATIC_LINES = [
+  "LOADING SITE  IN PROGRESS",
+  "SETTING TYPE   (PS/UPS MONO)",
+  "SETTING COLOR  (#00ff99, #ffffff)",
+  "SERVER IP      (10.10.40.11)",
+  "PROTOCOL       (HTTP/1.1)",
+  "",
+  "WELCOME TO VASILEIOS",
+  "",
+  "TYPE: (3D & WEB)",
+  "YEAR: (2026)",
+  "TEAM: (1 HUMAN)",
+  "LOCATION: (EARTH)"
+];
+
+export default function LoaderOverlay() {
     const [visible, setVisible] = useState(true);
-    const [fadeOut, setFadeOut] = useState(false);
-    const [typed, setTyped] = useState("");
+    const [lines, setLines] = useState<string[]>([]);
+    const [lineIndex, setLineIndex] = useState(0);
+    const [charIndex, setCharIndex] = useState(0);
+
+    const [terminalLines, setTerminalLines] = useState<string[]>([]);
 
     useEffect(() => {
-        if (typeof window === "undefined") return;
+      const clientInfo = getClientInfo();
+      setTerminalLines([
+        ...STATIC_LINES.slice(0, 4),
+        ...(clientInfo ?? []),
+        "",
+        ...STATIC_LINES.slice(4),
+      ]);
+    }, []);
 
-        if (oncePerSession) {
-            const seen = sessionStorage.getItem("intro_seen") === "1";
-            if (seen) {
-                setVisible(false);
-                return;
-            }
-        }
-
-        const timer = setTimeout(() => {
-            setFadeOut(true);
-            sessionStorage.setItem("intro_seen", "1");
-
-            // Remove from DOM after fade
-            setTimeout(() => setVisible(false), 600);
-        }, durationMs);
-
-        return () => clearTimeout(timer);
-    }, [oncePerSession, durationMs]);
-
+    // --- typing effect ---
     useEffect(() => {
         if (!visible) return;
 
-        setTyped("");
-        let index = 0;
+        if (lineIndex >= terminalLines.length) {
+            // minimum screen time (3s)
+            const timeout = setTimeout(() => setVisible(false), 3000);
+            return () => clearTimeout(timeout);
+        }
 
-        const interval = setInterval(() => {
-            setTyped(LOADER_TEXT.slice(0, index + 1));
-            index += 1;
+        const currentLine = terminalLines[lineIndex];
 
-            if (index >= LOADER_TEXT.length) {
-                clearInterval(interval);
-                setTyped(LOADER_TEXT); // lock final text
+        const timeout = setTimeout(() => {
+            if (charIndex < (currentLine ? currentLine.length : 0)) {
+                setCharIndex((c) => c + 1);
+            } else {
+                setLines((l) => [...l, currentLine]);
+                setLineIndex((i) => i + 1);
+                setCharIndex(0);
             }
-        }, 120);
+        }, 24); // typing speed
 
-        return () => clearInterval(interval);
-    }, [visible]);
+        return () => clearTimeout(timeout);
+    }, [charIndex, lineIndex, visible, terminalLines]);
+
+    useDevToolsOpen(() => {
+      runConsoleGreeting();
+    });
 
     if (!visible) return null;
 
     return (
-        <div
-            className={`fixed inset-0 z-[9999] flex items-center justify-center bg-black text-white transition-opacity duration-500 ${
-                fadeOut ? "opacity-0" : "opacity-100"
-            }`}
-        >
-            <div className="flex flex-col items-center gap-4">
-                <div className="text-sm font-mono tracking-[0.22em] flex">
-                    <span>{typed.replace(/_$/, "")}</span>
-                    <span
-                        className="ml-[0.1em]"
-                        style={{
-                            animation: "terminal-blink 1s steps(1, end) infinite",
-                        }}
-                    >
-                        {typed.endsWith(CURSOR) ? CURSOR : ""}
-                    </span>
-                </div>
+        <div className="fixed inset-0 z-[9999] bg-black text-[#c8ffdf] font-mono text-xs tracking-wide">
+            <div className="p-6 space-y-1">
+                {lines.map((line, i) => (
+                    <div key={i}>{line}</div>
+                ))}
 
-                <div className="w-64 overflow-hidden rounded-full bg-white/10">
-                    <div className="h-1 w-full bg-white/80 animate-pulse" />
-                </div>
+                {/* active typing line */}
+                {lineIndex < terminalLines.length && (
+                  <div>
+                    {terminalLines[lineIndex]
+                      ?.slice(0, charIndex)
+                      .split("")
+                      .map((char, i) => (
+                        <span
+                          key={i}
+                          className={Math.random() < 0.06 ? "char-noise" : ""}
+                          style={{ display: "inline-block" }}
+                        >
+                          {char === " " ? "\u00A0" : char}
+                        </span>
+                      ))}
+                    <span className="terminal-cursor">▊</span>
+                  </div>
+                )}
             </div>
+
             <style jsx global>{`
-              @keyframes terminal-blink {
-                0% { opacity: 1; }
-                50% { opacity: 0; }
-                100% { opacity: 1; }
-              }
-            `}</style>
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  .terminal-cursor {
+    margin-left: 2px;
+    animation: blink 1s steps(1) infinite;
+  }
+
+  .char-noise {
+    opacity: 0.6;
+    filter: blur(0.6px);
+    animation: noise-flicker 120ms steps(1) infinite;
+  }
+
+  @keyframes noise-flicker {
+    50% { opacity: 0.2; }
+  }
+`}</style>
         </div>
     );
+    
 }
