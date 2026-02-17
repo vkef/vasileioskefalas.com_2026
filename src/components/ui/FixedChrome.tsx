@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import BlinkingCursor from "@/components/ui/BlinkingCursor";
 
 const LEFT = "vasileios";
 const RIGHT = "kefalas";
@@ -9,13 +10,13 @@ export default function FixedChrome() {
     const [leftText, setLeftText] = useState("\\");
     const [rightText, setRightText] = useState("k");
     const [cursorVisible, setCursorVisible] = useState(false);
-    const [animating, setAnimating] = useState(false);
     const isExpandedRef = useRef(false);
+    const animatingRef = useRef(false);
 
     const expand = () => {
-        if (animating) return;
+        if (animatingRef.current || isExpandedRef.current) return;
 
-        setAnimating(true);
+        animatingRef.current = true;
         setCursorVisible(true);
         isExpandedRef.current = true;
 
@@ -36,7 +37,7 @@ export default function FixedChrome() {
                     if (ri >= RIGHT.length) {
                         clearInterval(expandRight);
                         setCursorVisible(true);
-                        setAnimating(false);
+                        animatingRef.current = false;
                     }
                 }, 80);
             }
@@ -44,9 +45,9 @@ export default function FixedChrome() {
     };
 
     const retract = () => {
-        if (animating) return;
+        if (animatingRef.current || !isExpandedRef.current) return;
 
-        setAnimating(true);
+        animatingRef.current = true;
         setCursorVisible(true);
         isExpandedRef.current = false;
 
@@ -69,11 +70,19 @@ export default function FixedChrome() {
                         setLeftText("\\");
                         setRightText("k");
                         setCursorVisible(false);
-                        setAnimating(false);
+                        animatingRef.current = false;
                     }
                 }, 60);
             }
         }, 60);
+    };
+
+    const handleLogoMouseEnter = () => {
+        if (window.scrollY > 0) expand();
+    };
+
+    const handleLogoMouseLeave = () => {
+        if (window.scrollY > 0) retract();
     };
 
     useEffect(() => {
@@ -100,29 +109,14 @@ export default function FixedChrome() {
                     <Link href="#top" aria-label="Home" className="inline-flex items-center">
                         <div
                             className="h-12 flex items-center font-mono text-sm tracking-[0.22em] text-white cursor-pointer"
-                            onMouseEnter={expand}
-                            onMouseLeave={retract}
+                            onMouseEnter={handleLogoMouseEnter}
+                            onMouseLeave={handleLogoMouseLeave}
                         >
                             <span>{leftText}</span>
                             <span>{rightText}</span>
                             {cursorVisible && (
-                                <span
-                                    className="ml-[0.1em]"
-                                    style={{
-                                        animation: "terminal-blink 1s steps(1, end) infinite",
-                                    }}
-                                >
-                                    _
-                                </span>
+                                <BlinkingCursor className="ml-[0.1em]" />
                             )}
-
-                            <style jsx global>{`
-                                @keyframes terminal-blink {
-                                    0% { opacity: 1; }
-                                    50% { opacity: 0; }
-                                    100% { opacity: 1; }
-                                }
-                            `}</style>
                         </div>
                     </Link>
                 </div>
@@ -142,7 +136,7 @@ export default function FixedChrome() {
                         target="_blank"
                         rel="noreferrer"
                         className="hover:text-white transition glitch-hover"
-                        data-text="LINKEDIN"
+                        data-text="Linkedin"
                     >
                         Linkedin
                     </a>
@@ -152,7 +146,7 @@ export default function FixedChrome() {
                         target="_blank"
                         rel="noreferrer"
                         className="hover:text-white transition glitch-hover"
-                        data-text="GITHUB"
+                        data-text="Github"
                     >
                         Github
                     </a>

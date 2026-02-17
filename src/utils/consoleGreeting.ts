@@ -1,6 +1,11 @@
 "use client";
 
+let hasRunConsoleGreeting = false;
+
 export function runConsoleGreeting() {
+  if (hasRunConsoleGreeting) return;
+  hasRunConsoleGreeting = true;
+
   const log = (msg: string, style: string) => {
     console.log(`%c${msg}`, style);
   };

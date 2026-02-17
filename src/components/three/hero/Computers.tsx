@@ -9,7 +9,7 @@ import {
     PerspectiveCamera,
     Text,
 } from "@react-three/drei";
-import { SpinningBox } from "./SpinningBox";
+import { MatrixOverlay } from "./MatrixOverlay";
 THREE.ColorManagement.legacyMode = false;
 
 
@@ -784,7 +784,7 @@ function ScreenText({ invert, x = 0, y = 1.2, ...props }) {
     );
 }
 
-/* Renders a monitor with a spinning box */
+/* Renders a monitor with a matrix overlay */
 function ScreenInteractive(props) {
     return (
         <Screen {...props}>
@@ -798,7 +798,7 @@ function ScreenInteractive(props) {
             <ambientLight intensity={Math.PI / 2} />
             <pointLight decay={0} position={[10, 10, 10]} intensity={Math.PI} />
             <pointLight decay={0} position={[-10, -10, -10]} />
-            <SpinningBox position={[-3.15, 0.75, 0]} scale={0.5} />
+            <MatrixOverlay position={[0, 0, 0]} scale={1} />
         </Screen>
     );
 }
