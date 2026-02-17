@@ -46,7 +46,7 @@ export default function Scene() {
             </group>
 
             {/* Postprocessing */}
-            <EffectComposer disableNormalPass>
+            <EffectComposer enableNormalPass={false}>
                 <Bloom luminanceThreshold={0} mipmapBlur luminanceSmoothing={0.0} intensity={0} />
                 <DepthOfField target={[0, 0, 13]} focalLength={0.3} bokehScale={2} height={700} />
             </EffectComposer>
@@ -62,4 +62,5 @@ function CameraRig() {
         easing.damp3(state.camera.position, [-1 + (state.pointer.x * state.viewport.width) / 3, (1 + state.pointer.y) / 2, 5.5], 0.5, delta)
         state.camera.lookAt(0, 0, 0)
     })
+    return null;
 }

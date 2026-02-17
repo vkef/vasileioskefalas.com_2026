@@ -6,7 +6,7 @@ import AboutIntro from "@/components/ui/AboutMe";
 export default function Home() {
   return (
       <main id="top" className="relative">
-          <LoaderOverlay oncePerSession={false} />
+          <LoaderOverlay />
           {/* Hero */}
         <section id="hero" className="relative min-h-screen">
           <div className="absolute inset-0 -z-10">

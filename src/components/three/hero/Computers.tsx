@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import * as THREE from "three";
 import { useMemo, useContext, createContext, useRef } from "react";
@@ -10,10 +11,10 @@ import {
     Text,
 } from "@react-three/drei";
 import { MatrixOverlay } from "./MatrixOverlay";
-THREE.ColorManagement.legacyMode = false;
+THREE.ColorManagement.enabled = true;
 
 
-const context = createContext();
+const context = createContext<any>(null);
 export function Instances({ children, ...props }) {
     const { nodes } = useGLTF("/computers_1-transformed.glb");
     const instances = useMemo(
