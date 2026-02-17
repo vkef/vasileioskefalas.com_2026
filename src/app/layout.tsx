@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "./glitch.css";
 import FixedChrome from "@/components/ui/FixedChrome";
@@ -12,11 +11,6 @@ const spaceGrotesk = localFont({
   src: "../../public/fonts/SpaceGrotesk-VariableFont_wght.ttf",
   variable: "--font-space-grotesk",
   weight: "300 700",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -32,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${spaceGrotesk.variable} ${geistMono.variable} antialiased cursor-none`}
+        className={`${spaceGrotesk.variable} antialiased cursor-none`}
       >
         <FixedChrome />
         <ScrollCounter sections={["hero", "about", "work", "contact"]} />
