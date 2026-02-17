@@ -1,12 +1,12 @@
 import HeroCanvas from "@/components/three/hero/HeroCanvas";
-// import LoaderOverlay from "@/components/ui/LoaderOverlay";
+import LoaderOverlay from "@/components/ui/LoaderOverlay";
 import ExperienceList from "@/components/ui/ExperienceList";
 import AboutIntro from "@/components/ui/AboutMe";
 
 export default function Home() {
   return (
       <main id="top" className="relative">
-          {/*<LoaderOverlay oncePerSession={false} />*/}
+          <LoaderOverlay oncePerSession={false} />
           {/* Hero */}
         <section id="hero" className="relative min-h-screen">
           <div className="absolute inset-0 -z-10">

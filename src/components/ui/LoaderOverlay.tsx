@@ -4,6 +4,17 @@ import { useEffect, useState } from "react";
 import { UAParser } from "ua-parser-js";
 import { useDevToolsOpen } from "@/hooks/useDevToolsOpen";
 import { runConsoleGreeting } from "@/utils/consoleGreeting";
+import BlinkingCursor from "@/components/ui/BlinkingCursor";
+
+function formatLogInTime(date: Date) {
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const hh = String(date.getHours()).padStart(2, "0");
+  const mm = String(date.getMinutes()).padStart(2, "0");
+  const ss = String(date.getSeconds()).padStart(2, "0");
+
+  return `${days[date.getDay()]} ${months[date.getMonth()]} ${String(date.getDate()).padStart(2, "0")} ${hh}:${mm}:${ss}`;
+}
 
 function getClientInfo() {
   if (typeof window === "undefined") return null;
@@ -12,27 +23,12 @@ function getClientInfo() {
   const result = parser.getResult();
 
   return [
-    `BROWSER        : ${result.browser.name ?? "Unknown"} ${result.browser.version ?? ""}`,
-    `OS             : ${result.os.name ?? "Unknown"} ${result.os.version ?? ""}`,
-    `LANGUAGE       : ${navigator.language}`,
-    `TIMEZONE       : ${Intl.DateTimeFormat().resolvedOptions().timeZone}`,
-    `RESOLUTION     : ${window.screen.width}x${window.screen.height}`,
+    `logintime: ${formatLogInTime(new Date())} | browser: ${result.browser.name ?? "Unknown"} ${result.browser.version ?? ""} | os: ${result.os.name ?? "Unknown"} ${result.os.version ?? ""}`,
   ];
 }
 
 const STATIC_LINES = [
-  "LOADING SITE  IN PROGRESS",
-  "SETTING TYPE   (PS/UPS MONO)",
-  "SETTING COLOR  (#00ff99, #ffffff)",
-  "SERVER IP      (10.10.40.11)",
-  "PROTOCOL       (HTTP/1.1)",
-  "",
-  "WELCOME TO VASILEIOS",
-  "",
-  "TYPE: (3D & WEB)",
-  "YEAR: (2026)",
-  "TEAM: (1 HUMAN)",
-  "LOCATION: (EARTH)"
+  "visitor@vasileioskefalas:~$ loading"
 ];
 
 export default function LoaderOverlay() {
@@ -42,14 +38,14 @@ export default function LoaderOverlay() {
     const [charIndex, setCharIndex] = useState(0);
 
     const [terminalLines, setTerminalLines] = useState<string[]>([]);
+    const TYPE_SPEED_MS = 12;
+    const LINE_PAUSE_MS = 1000;
 
     useEffect(() => {
       const clientInfo = getClientInfo();
       setTerminalLines([
-        ...STATIC_LINES.slice(0, 4),
         ...(clientInfo ?? []),
-        "",
-        ...STATIC_LINES.slice(4),
+        ...STATIC_LINES,
       ]);
     }, []);
 
@@ -58,22 +54,24 @@ export default function LoaderOverlay() {
         if (!visible) return;
 
         if (lineIndex >= terminalLines.length) {
-            // minimum screen time (3s)
-            const timeout = setTimeout(() => setVisible(false), 3000);
+            const timeout = setTimeout(() => setVisible(false), LINE_PAUSE_MS);
             return () => clearTimeout(timeout);
         }
 
         const currentLine = terminalLines[lineIndex];
 
+        const lineLength = currentLine ? currentLine.length : 0;
+
         const timeout = setTimeout(() => {
-            if (charIndex < (currentLine ? currentLine.length : 0)) {
+            if (charIndex < lineLength) {
                 setCharIndex((c) => c + 1);
-            } else {
-                setLines((l) => [...l, currentLine]);
-                setLineIndex((i) => i + 1);
-                setCharIndex(0);
+                return;
             }
-        }, 24); // typing speed
+
+            setLines((l) => [...l, currentLine]);
+            setLineIndex((i) => i + 1);
+            setCharIndex(0);
+        }, charIndex < lineLength ? TYPE_SPEED_MS : LINE_PAUSE_MS);
 
         return () => clearTimeout(timeout);
     }, [charIndex, lineIndex, visible, terminalLines]);
@@ -87,9 +85,19 @@ export default function LoaderOverlay() {
     return (
         <div className="fixed inset-0 z-[9999] bg-black text-[#c8ffdf] font-mono text-xs tracking-wide">
             <div className="p-6 space-y-1">
-                {lines.map((line, i) => (
-                    <div key={i}>{line}</div>
-                ))}
+                {lines.map((line, i) => {
+                  const isLastCommittedLine = i === lines.length - 1;
+                  const typingComplete = lineIndex >= terminalLines.length;
+
+                  return (
+                    <div key={i}>
+                      {line}
+                      {typingComplete && isLastCommittedLine && (
+                        <BlinkingCursor className="terminal-cursor"  />
+                      )}
+                    </div>
+                  );
+                })}
 
                 {/* active typing line */}
                 {lineIndex < terminalLines.length && (
@@ -106,27 +114,21 @@ export default function LoaderOverlay() {
                           {char === " " ? "\u00A0" : char}
                         </span>
                       ))}
-                    <span className="terminal-cursor">▊</span>
+                    <BlinkingCursor className="terminal-cursor"  />
                   </div>
                 )}
+
             </div>
 
             <style jsx global>{`
-  @keyframes blink {
-    0% { opacity: 1; }
-    50% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-
   .terminal-cursor {
     margin-left: 2px;
-    animation: blink 1s steps(1) infinite;
   }
 
   .char-noise {
     opacity: 0.6;
     filter: blur(0.6px);
-    animation: noise-flicker 120ms steps(1) infinite;
+    animation: noise-flicker 100ms steps(1) 2;
   }
 
   @keyframes noise-flicker {
