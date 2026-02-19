@@ -1,0 +1,3 @@
+:HL["/_next/static/chunks/43ead691850ad4f5.css","style"]
+:HL["/_next/static/media/SpaceGrotesk_VariableFont_wght-s.p.5364be1a.ttf","font",{"crossOrigin":"","type":"font/ttf"}]
+0:{"buildId":"CROPe5JZhTEqqmuR2Ir8A","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
