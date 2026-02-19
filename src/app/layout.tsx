@@ -13,9 +13,68 @@ const spaceGrotesk = localFont({
   weight: "300 700",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vasileioskefalas.com";
+const siteName = "Vasileios Kefalas";
+const defaultTitle = "Vasileios Kefalas | Portfolio";
+const defaultDescription =
+  "Portfolio of Vasileios Kefalas: full stack developer projects, experience, and contact information.";
+
 export const metadata: Metadata = {
-  title: "Vasileios Kefalas",
-  description: "Personal website",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: defaultTitle,
+    template: "%s | Vasileios Kefalas",
+  },
+  description: defaultDescription,
+  applicationName: siteName,
+  alternates: {
+    canonical: "/",
+  },
+  keywords: [
+    "Vasileios Kefalas",
+    "portfolio",
+    "full stack developer",
+    "software engineer",
+    "React",
+    "Next.js",
+  ],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    siteName,
+    title: defaultTitle,
+    description: defaultDescription,
+    images: [
+      {
+        url: "/vasileioskefalas.png",
+        width: 1200,
+        height: 630,
+        alt: "Vasileios Kefalas portrait",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: defaultTitle,
+    description: defaultDescription,
+    images: ["/vasileioskefalas.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
