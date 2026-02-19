@@ -1,11 +1,58 @@
+import type { Metadata } from "next";
 import HeroCanvas from "@/components/three/hero/HeroCanvas";
 import LoaderOverlay from "@/components/ui/LoaderOverlay";
 import ExperienceList from "@/components/ui/ExperienceList";
 import AboutIntro from "@/components/ui/AboutMe";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vasileioskefalas.com";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description:
+    "Explore the portfolio of Vasileios Kefalas, including professional experience, technical projects, and contact details.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Vasileios Kefalas | Portfolio",
+    description:
+      "Explore the portfolio of Vasileios Kefalas, including professional experience, technical projects, and contact details.",
+    url: "/",
+    images: [
+      {
+        url: "/vasileioskefalas.png",
+        width: 1200,
+        height: 630,
+        alt: "Vasileios Kefalas portfolio preview",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Vasileios Kefalas | Portfolio",
+    description:
+      "Explore the portfolio of Vasileios Kefalas, including professional experience, technical projects, and contact details.",
+    images: ["/vasileioskefalas.png"],
+  },
+};
+
 export default function Home() {
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Vasileios Kefalas",
+    url: siteUrl,
+    image: `${siteUrl}/vasileioskefalas.png`,
+    jobTitle: "Full Stack Developer",
+  };
+
   return (
       <main id="top" className="relative">
+          <h1 className="sr-only">Vasileios Kefalas Portfolio</h1>
+          <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          />
           <LoaderOverlay />
           {/* Hero */}
         <section id="hero" className="relative min-h-screen">
