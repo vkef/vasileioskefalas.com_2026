@@ -7,7 +7,9 @@ import AboutIntro from "@/components/ui/AboutMe";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vasileioskefalas.com";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: {
+    absolute: "Vasileios Kefalas",
+  },
   description:
     "Explore the portfolio of Vasileios Kefalas, including professional experience, technical projects, and contact details.",
   alternates: {
