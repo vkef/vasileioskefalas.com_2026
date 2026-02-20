@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import "./glitch.css";
 import FixedChrome from "@/components/ui/FixedChrome";
@@ -7,17 +6,11 @@ import ScrollCounter from "@/components/ui/ScrollCounter";
 import CursorTracker from "@/components/ui/CursorTracker";
 import DevToolsGreeting from "@/components/ui/DevToolsGreeting";
 
-const spaceGrotesk = localFont({
-  src: "../../public/fonts/SpaceGrotesk-VariableFont_wght.ttf",
-  variable: "--font-space-grotesk",
-  weight: "300 700",
-});
-
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vasileioskefalas.com";
 const siteName = "Vasileios Kefalas";
-const defaultTitle = "Vasileios Kefalas | Portfolio";
+const defaultTitle = "Vasileios Kefalas | Full Stack Developer";
 const defaultDescription =
-  "Portfolio of Vasileios Kefalas: full stack developer projects, experience, and contact information.";
+  "Full stack developer portfolio of Vasileios Kefalas with projects, technical experience, and professional background.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -84,9 +77,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${spaceGrotesk.variable} antialiased cursor-none`}
-      >
+      <body className="antialiased cursor-none">
         <FixedChrome />
         <ScrollCounter sections={["hero", "about", "work", "contact"]} />
         <DevToolsGreeting />

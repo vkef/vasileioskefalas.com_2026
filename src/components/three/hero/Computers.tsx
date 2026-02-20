@@ -779,7 +779,7 @@ function ScreenText({ invert, x = 0, y = 1.2, ...props }) {
                 letterSpacing={-0.1}
                 color={!invert ? "black" : "#35c19f"}
             >
-                vasiliskefalas.com
+                vasileioskefalas.com
             </Text>
         </Screen>
     );

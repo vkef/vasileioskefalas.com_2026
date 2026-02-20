@@ -68,7 +68,7 @@ export default function FixedChrome() {
                     } else {
                         clearInterval(retractLeft);
                         setLeftText("\\");
-                        setRightText("k");
+                        setRightText("K");
                         setCursorVisible(false);
                         animatingRef.current = false;
                     }
@@ -124,7 +124,7 @@ export default function FixedChrome() {
                 {/* Contact */}
                 <div className="pointer-events-auto flex items-center gap-3 text-xs tracking-[0.2em] text-white/80">
                     <a
-                        href="#contact"
+                        href="mailto:hello@vasileioskefalas.com"
                         className="hover:text-white transition glitch-hover"
                         data-text="CONTACT"
                     >
@@ -132,7 +132,7 @@ export default function FixedChrome() {
                     </a>
                     <span className="text-white/30">/</span>
                     <a
-                        href=""
+                        href="https://www.linkedin.com/in/kefalasvasileios/"
                         target="_blank"
                         rel="noreferrer"
                         className="hover:text-white transition glitch-hover"
@@ -142,7 +142,7 @@ export default function FixedChrome() {
                     </a>
                     <span className="text-white/30">/</span>
                     <a
-                        href=""
+                        href="https://github.com/vkef"
                         target="_blank"
                         rel="noreferrer"
                         className="hover:text-white transition glitch-hover"

@@ -8,17 +8,17 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vasileioskefalas.co
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Vasileios Kefalas",
+    absolute: "Vasileios Kefalas | Full Stack Developer Portfolio",
   },
   description:
-    "Explore the portfolio of Vasileios Kefalas, including professional experience, technical projects, and contact details.",
+    "Full stack developer portfolio of Vasileios Kefalas, featuring web projects, engineering experience, and professional background.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Vasileios Kefalas | Portfolio",
+    title: "Vasileios Kefalas | Full Stack Developer Portfolio",
     description:
-      "Explore the portfolio of Vasileios Kefalas, including professional experience, technical projects, and contact details.",
+      "Full stack developer portfolio of Vasileios Kefalas, featuring web projects, engineering experience, and professional background.",
     url: "/",
     images: [
       {
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vasileios Kefalas | Portfolio",
+    title: "Vasileios Kefalas | Full Stack Developer Portfolio",
     description:
-      "Explore the portfolio of Vasileios Kefalas, including professional experience, technical projects, and contact details.",
+      "Full stack developer portfolio of Vasileios Kefalas, featuring web projects, engineering experience, and professional background.",
     images: ["/vasileioskefalas.png"],
   },
 };
@@ -50,7 +50,6 @@ export default function Home() {
 
   return (
       <main id="top" className="relative">
-          <h1 className="sr-only">Vasileios Kefalas Portfolio</h1>
           <script
               type="application/ld+json"
               dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
@@ -63,12 +62,12 @@ export default function Home() {
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/40 via-zinc-900/30 to-black/50" />
             <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-[40vh] bg-gradient-to-b from-transparent to-black" />
           </div>
-          <div className="pointer-events-none mx-auto flex min-h-screen max-w-7xl items-center justify-center px-6">
-            {/*<h1 className="text-center text-6xl font-semibold tracking-[0.4em]">*/}
-            {/*  VASILEIOS*/}
-            {/*  <br />*/}
-            {/*  KEFALAS*/}
-            {/*</h1>*/}
+          <div className="hidden pointer-events-none mx-auto flex min-h-screen max-w-7xl items-center justify-center px-6">
+            <h1 className="text-center text-4xl md:text-6xl font-semibold tracking-[0.22em] text-white/95">
+              VASILEIOS
+              <br />
+              KEFALAS
+            </h1>
           </div>
         </section>
 

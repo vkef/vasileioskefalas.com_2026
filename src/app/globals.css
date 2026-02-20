@@ -1,14 +1,55 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Space Grotesk Local";
+  src: url("/fonts/SpaceGrotesk-Light.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Space Grotesk Local";
+  src: url("/fonts/SpaceGrotesk-Regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Space Grotesk Local";
+  src: url("/fonts/SpaceGrotesk-Medium.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Space Grotesk Local";
+  src: url("/fonts/SpaceGrotesk-SemiBold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Space Grotesk Local";
+  src: url("/fonts/SpaceGrotesk-Bold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --font-sans-stack: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-space-grotesk);
+  --font-sans: "Space Grotesk Local", var(--font-sans-stack);
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
@@ -22,7 +63,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-space-grotesk), sans-serif;
+  font-family: "Space Grotesk Local", var(--font-sans-stack);
 }
 
 html {
@@ -84,6 +125,19 @@ html, body {
 
 canvas {
   cursor: none !important;
+}
+
+/* On touch/mobile devices, disable the custom cursor system */
+@media (hover: none), (pointer: coarse) {
+  * {
+    cursor: auto !important;
+  }
+
+  html,
+  body,
+  canvas {
+    cursor: auto !important;
+  }
 }
 
 @layer utilities {
