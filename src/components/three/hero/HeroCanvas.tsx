@@ -20,6 +20,9 @@ export default function HeroCanvas() {
             camera={{ position: [-1.5, 1, 5.5], fov: 45, near: 1, far: 20 }}
             eventPrefix="offset"
             eventSource={eventTarget ?? undefined}
+            onCreated={({ gl }) => {
+                gl.debug.checkShaderErrors = false;
+            }}
             style={{ pointerEvents: "none" }}
         >
             <Suspense fallback={null}>

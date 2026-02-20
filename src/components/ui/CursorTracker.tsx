@@ -5,8 +5,18 @@ import { useEffect, useState } from "react";
 export default function CursorTracker() {
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const [isHoveringLink, setIsHoveringLink] = useState(false);
+    const [enabled, setEnabled] = useState(false);
 
     useEffect(() => {
+        const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+        const updateEnabled = () => setEnabled(mediaQuery.matches);
+        updateEnabled();
+        mediaQuery.addEventListener("change", updateEnabled);
+
+        if (!mediaQuery.matches) {
+            return () => mediaQuery.removeEventListener("change", updateEnabled);
+        }
+
         const onMove = (e: MouseEvent) => {
             setPos({ x: e.clientX, y: e.clientY });
         };
@@ -29,10 +39,13 @@ export default function CursorTracker() {
         window.addEventListener("mouseover", onMouseOver);
 
         return () => {
+          mediaQuery.removeEventListener("change", updateEnabled);
           window.removeEventListener("mousemove", onMove);
           window.removeEventListener("mouseover", onMouseOver);
         };
     }, []);
+
+    if (!enabled) return null;
 
     return (
         <div
