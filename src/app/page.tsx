@@ -54,7 +54,7 @@ export default function Home() {
               type="application/ld+json"
               dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
           />
-          {/*<LoaderOverlay />*/}
+          <LoaderOverlay />
           {/* Hero */}
         <section id="hero" className="relative min-h-screen">
           <div className="absolute inset-0 -z-10">

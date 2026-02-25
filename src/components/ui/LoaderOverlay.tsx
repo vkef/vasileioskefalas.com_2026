@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { UAParser } from "ua-parser-js";
 import { useDevToolsOpen } from "@/hooks/useDevToolsOpen";
 import { runConsoleGreeting } from "@/utils/consoleGreeting";
 import BlinkingCursor from "@/components/ui/BlinkingCursor";
@@ -18,12 +17,10 @@ function formatLogInTime(date: Date) {
 
 function getClientInfo() {
   if (typeof window === "undefined") return null;
-
-  const parser = new UAParser();
-  const result = parser.getResult();
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "Unknown";
 
   return [
-    `logintime: ${formatLogInTime(new Date())} | browser: ${result.browser.name ?? "Unknown"} ${result.browser.version ?? ""} | os: ${result.os.name ?? "Unknown"} ${result.os.version ?? ""}`,
+    `logintime: ${formatLogInTime(new Date())} | ${timeZone}`,
   ];
 }
 
@@ -36,9 +33,11 @@ export default function LoaderOverlay() {
     const [lines, setLines] = useState<string[]>([]);
     const [lineIndex, setLineIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
+    const [isPausedBetweenLines, setIsPausedBetweenLines] = useState(false);
 
     const [terminalLines, setTerminalLines] = useState<string[]>([]);
-    const TYPE_SPEED_MS = 12;
+    const TYPE_SPEED_MS = 8;
+    const FIRST_LINE_TYPE_SPEED_MS = 6;
     const LINE_PAUSE_MS = 1000;
 
     useEffect(() => {
@@ -52,15 +51,30 @@ export default function LoaderOverlay() {
     // --- typing effect ---
     useEffect(() => {
         if (!visible) return;
+        if (terminalLines.length === 0) return;
 
-        if (lineIndex >= terminalLines.length) {
-            const timeout = setTimeout(() => setVisible(false), LINE_PAUSE_MS);
+        const currentLine = terminalLines[lineIndex] ?? "";
+
+        // Pause only after each full line (cursor stays visible during this state).
+        if (isPausedBetweenLines) {
+            const timeout = setTimeout(() => {
+                const nextLineIndex = lineIndex + 1;
+                if (nextLineIndex >= terminalLines.length) {
+                    setVisible(false);
+                    return;
+                }
+
+                setLineIndex(nextLineIndex);
+                setCharIndex(0);
+                setIsPausedBetweenLines(false);
+            }, LINE_PAUSE_MS);
+
             return () => clearTimeout(timeout);
         }
 
-        const currentLine = terminalLines[lineIndex];
+        const lineLength = currentLine.length;
 
-        const lineLength = currentLine ? currentLine.length : 0;
+        const currentTypeSpeed = lineIndex === 0 ? FIRST_LINE_TYPE_SPEED_MS : TYPE_SPEED_MS;
 
         const timeout = setTimeout(() => {
             if (charIndex < lineLength) {
@@ -68,13 +82,13 @@ export default function LoaderOverlay() {
                 return;
             }
 
+            // Commit line, then enter pause state before typing next one.
             setLines((l) => [...l, currentLine]);
-            setLineIndex((i) => i + 1);
-            setCharIndex(0);
-        }, charIndex < lineLength ? TYPE_SPEED_MS : LINE_PAUSE_MS);
+            setIsPausedBetweenLines(true);
+        }, currentTypeSpeed);
 
         return () => clearTimeout(timeout);
-    }, [charIndex, lineIndex, visible, terminalLines]);
+    }, [charIndex, lineIndex, visible, terminalLines, isPausedBetweenLines]);
 
     useDevToolsOpen(() => {
       runConsoleGreeting();
@@ -83,16 +97,16 @@ export default function LoaderOverlay() {
     if (!visible) return null;
 
     return (
-        <div className="fixed inset-0 z-[9999] bg-black text-[#c8ffdf] text-[length:var(--fs-ui)] tracking-wide">
+        <div className="fixed inset-0 z-[20000] bg-black text-[#c8ffdf] font-sans text-[length:var(--fs-body-sm)] tracking-wide">
             <div className="p-6 space-y-1">
                 {lines.map((line, i) => {
                   const isLastCommittedLine = i === lines.length - 1;
-                  const typingComplete = lineIndex >= terminalLines.length;
+                  const showPausedCursor = isPausedBetweenLines && isLastCommittedLine;
 
                   return (
                     <div key={i}>
                       {line}
-                      {typingComplete && isLastCommittedLine && (
+                      {showPausedCursor && (
                         <BlinkingCursor className="terminal-cursor"  />
                       )}
                     </div>
@@ -100,7 +114,7 @@ export default function LoaderOverlay() {
                 })}
 
                 {/* active typing line */}
-                {lineIndex < terminalLines.length && (
+                {!isPausedBetweenLines && lineIndex < terminalLines.length && (
                   <div>
                     {terminalLines[lineIndex]
                       ?.slice(0, charIndex)
@@ -108,7 +122,7 @@ export default function LoaderOverlay() {
                       .map((char, i) => (
                         <span
                           key={i}
-                          className={Math.random() < 0.06 ? "char-noise" : ""}
+                          className={Math.random() < 0.02 ? "char-noise" : ""}
                           style={{ display: "inline-block" }}
                         >
                           {char === " " ? "\u00A0" : char}
@@ -126,13 +140,15 @@ export default function LoaderOverlay() {
   }
 
   .char-noise {
-    opacity: 0.6;
-    filter: blur(0.6px);
+    color: #e7ffef;
+    opacity: 0.95;
+    filter: blur(0.25px);
+    text-shadow: 0 0 0.22em rgba(200, 255, 223, 0.7);
     animation: noise-flicker 100ms steps(1) 2;
   }
 
   @keyframes noise-flicker {
-    50% { opacity: 0.2; }
+    50% { opacity: 0.55; }
   }
 `}</style>
         </div>

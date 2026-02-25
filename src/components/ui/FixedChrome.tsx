@@ -20,6 +20,7 @@ export default function FixedChrome() {
         animatingRef.current = true;
         setCursorVisible(true);
         isExpandedRef.current = true;
+        setRightText("k");
 
         let li = 0;
         let ri = 0;
@@ -104,7 +105,7 @@ export default function FixedChrome() {
     return (
         <div className="pointer-events-none fixed inset-0 z-[10000]">
             {/* Top row */}
-            <div className="flex items-start justify-between px-4 pt-4 md:items-center md:px-6 md:pt-4">
+            <div className="flex items-start justify-between px-3 pt-3 md:items-center md:px-6 md:pt-5">
                 {/* Logo */}
                 <div className="pointer-events-auto">
                     <Link href="#top" aria-label="Home" className="inline-flex items-center">
@@ -117,7 +118,7 @@ export default function FixedChrome() {
                                 style={isCompactLogo ? { fontFamily: "\"Roboto\", var(--font-sans-stack)" } : undefined}
                                 className={
                                     leftText === "\\"
-                                        ? `relative -top-[3px] md:-top-[px] lg:top-0 inline-block leading-none scale-y-[0.90] -mr-[0.09em] ${isCompactLogo ? "text-[length:calc(var(--fs-counter)*0.92)] font-bold" : ""}`
+                                        ? `relative  top-[-2px] md:top-[-3px] inline-block leading-none scale-y-[0.92] -mr-[0.02em] ${isCompactLogo ? "text-[length:calc(var(--fs-h1)*0.92)] font-bold logo-dithered" : ""}`
                                         : "leading-none"
                                 }
                             >
@@ -125,7 +126,7 @@ export default function FixedChrome() {
                             </span>
                             <span
                                 style={isCompactLogo ? { fontFamily: "\"Roboto\", var(--font-sans-stack)" } : undefined}
-                                className={isCompactLogo ? "leading-none text-[length:var(--fs-counter)] font-bold" : "leading-none"}
+                                className={isCompactLogo ? "leading-none text-[length:var(--fs-h1)] font-bold logo-dithered" : "leading-none"}
                             >
                                 {rightText}
                             </span>
@@ -172,7 +173,7 @@ export default function FixedChrome() {
             </div>
 
             {/* Copyright */}
-            <div className="pointer-events-auto absolute bottom-4 left-4 md:bottom-6 md:left-6">
+            <div className="pointer-events-auto absolute bottom-3 left-3 md:bottom-6 md:left-6">
                 <span className="block text-[length:var(--fs-ui)] tracking-[0.25em] text-white/60 [writing-mode:vertical-rl] rotate-180">
                     COPYRIGHT © {new Date().getFullYear()}
                 </span>

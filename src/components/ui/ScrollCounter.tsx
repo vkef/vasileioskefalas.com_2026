@@ -89,7 +89,7 @@ export default function ScrollCounter({ sections }: Props) {
     const TOTAL_PAGES = 3;
 
     return (
-        <div className="pointer-events-none fixed right-4 bottom-4 z-[10000] translate-y-0 flex flex-col items-baseline gap-1 md:right-6 md:bottom-6">
+        <div className="pointer-events-none fixed right-3 bottom-3 z-[10000] translate-y-0 flex flex-col items-baseline gap-1 md:right-6 md:bottom-6">
             {/* Current page */}
             <div className="relative min-h-[2.1rem] overflow-hidden md:min-h-[2.1rem]">
                 <div

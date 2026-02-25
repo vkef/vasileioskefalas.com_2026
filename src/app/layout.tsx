@@ -5,6 +5,7 @@ import FixedChrome from "@/components/ui/FixedChrome";
 import ScrollCounter from "@/components/ui/ScrollCounter";
 import CursorTracker from "@/components/ui/CursorTracker";
 import DevToolsGreeting from "@/components/ui/DevToolsGreeting";
+import LoaderOverlay from "@/components/ui/LoaderOverlay";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vasileioskefalas.com";
 const siteName = "Vasileios Kefalas";
@@ -78,6 +79,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased cursor-none">
+        <LoaderOverlay />
         <FixedChrome />
         <ScrollCounter sections={["hero", "about", "work", "contact"]} />
         <DevToolsGreeting />
