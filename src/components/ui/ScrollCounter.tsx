@@ -89,20 +89,20 @@ export default function ScrollCounter({ sections }: Props) {
     const TOTAL_PAGES = 3;
 
     return (
-        <div className="pointer-events-none fixed right-6 bottom-6 z-50 translate-y-0 flex flex-col items-baseline gap-1 mix-blend-difference">
+        <div className="pointer-events-none fixed right-4 bottom-4 z-[10000] translate-y-0 flex flex-col items-baseline gap-1 md:right-6 md:bottom-6">
             {/* Current page */}
-            <div className="relative min-h-[3rem] overflow-hidden">
+            <div className="relative min-h-[2.1rem] overflow-hidden md:min-h-[2.1rem]">
                 <div
                     aria-label={pad3(activeIndex + 1)}
-                    className="text-5xl font-medium leading-none tracking-[0.1em] tabular-nums"
+                    className="text-[length:var(--fs-counter)] font-medium leading-none tracking-[0.1em] tabular-nums "
                 >
                     <RollingNumber value={activeIndex + 1} />
                 </div>
             </div>
 
             {/* Total pages */}
-            <div className="overflow-hidden pl-2">
-                <div className="text-xs tracking-[0.25em] text-white/80 tabular-nums">
+            <div className="overflow-hidden pl-1 md:pl-1">
+                <div className="text-[10px] md:text-[length:var(--fs-ui)] tracking-[0.25em] text-white/80 tabular-nums [font-variant-numeric:slashed-zero]">
                     {pad3(TOTAL_PAGES)}
                 </div>
             </div>

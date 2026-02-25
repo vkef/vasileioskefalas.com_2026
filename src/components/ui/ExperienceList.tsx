@@ -6,20 +6,30 @@ export default function ExperienceList() {
 
             {ITEMS.map((item, i) => (
                 <div key={i} className="group glitch-hover" data-cursor="large">
-                    <div className="grid grid-cols-12 gap-6 px-6 py-10">
+                    <div className="grid grid-cols-12 gap-6 pl-10 pr-6 py-10 md:pl-16 md:pr-6">
                         {/* Left title */}
-                        <div className="col-span-12 md:col-span-4 text-sm tracking-wide text-white/70 group-hover:text-white transition">
+                        <div className="col-span-12 md:col-span-4 text-[length:var(--fs-body-sm)] tracking-wide text-white/70 group-hover:text-white transition">
                             <div className="flex flex-col gap-1">
                                 <span className="uppercase text-white/50">
                                     {item.position}
                                 </span>
                                 <span data-text={item.company}>{item.company}</span>
-                                <span className="text-xs text-white/50">{item.dates}</span>
+                                <span className="text-[length:var(--fs-ui)] text-white/50">{item.dates}</span>
+                                <div className="mt-3 flex flex-wrap gap-2.5">
+                                    {item.tags.map((tag) => (
+                                        <span
+                                            key={tag}
+                                            className="inline-flex whitespace-nowrap items-center border border-white/30 px-2.5 py-1 text-[length:var(--fs-ui)] tracking-wide text-white/75"
+                                        >
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
 
                         {/* Right description */}
-                        <div className="col-span-12 md:col-span-8 text-sm leading-relaxed text-white/80 group-hover:text-white transition">
+                        <div className="col-span-12 md:col-span-8 text-[length:var(--fs-body-sm)] leading-relaxed text-white/80 group-hover:text-white transition">
                             <ul className="space-y-2">
                                 {item.details.map((detail, detailIndex) => (
                                     <li key={detailIndex}>- {detail}</li>
@@ -41,6 +51,7 @@ const ITEMS = [
         position: "IT Technician",
         company: "Canada's Wonderland",
         dates: "Jun. 2023 - Jan. 2026",
+        tags: ["PowerShell", "Active Directory", "Cisco CUCM", "SharePoint", "Jira", "Oracle Simphony"],
         details: [
             "Provisioned Windows PCs with MDT, and deployed scripting via PowerShell and ConnectWise.",
             "Managed AD accounts to propagate ACLs and unified access across in-house apps, Exchange, and SharePoint.",
@@ -53,6 +64,7 @@ const ITEMS = [
         position: "Back Office Technical Support",
         company: "Vodafone A.E",
         dates: "2021 - 2023",
+        tags: ["Technical Support", "Customer Operations", "Incident Handling"],
         details: [
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         ],

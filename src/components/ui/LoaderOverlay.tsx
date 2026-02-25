@@ -83,7 +83,7 @@ export default function LoaderOverlay() {
     if (!visible) return null;
 
     return (
-        <div className="fixed inset-0 z-[9999] bg-black text-[#c8ffdf] font-mono text-xs tracking-wide">
+        <div className="fixed inset-0 z-[9999] bg-black text-[#c8ffdf] text-[length:var(--fs-ui)] tracking-wide">
             <div className="p-6 space-y-1">
                 {lines.map((line, i) => {
                   const isLastCommittedLine = i === lines.length - 1;

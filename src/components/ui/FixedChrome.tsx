@@ -8,10 +8,11 @@ const RIGHT = "kefalas";
 
 export default function FixedChrome() {
     const [leftText, setLeftText] = useState("\\");
-    const [rightText, setRightText] = useState("k");
+    const [rightText, setRightText] = useState("K");
     const [cursorVisible, setCursorVisible] = useState(false);
     const isExpandedRef = useRef(false);
     const animatingRef = useRef(false);
+    const isCompactLogo = leftText === "\\" && (rightText === "k" || rightText === "K");
 
     const expand = () => {
         if (animatingRef.current || isExpandedRef.current) return;
@@ -101,19 +102,33 @@ export default function FixedChrome() {
     }, []);
 
     return (
-        <div className="pointer-events-none fixed inset-0 z-50">
+        <div className="pointer-events-none fixed inset-0 z-[10000]">
             {/* Top row */}
-            <div className="flex items-start justify-between px-6 pt-6">
+            <div className="flex items-start justify-between px-4 pt-4 md:items-center md:px-6 md:pt-4">
                 {/* Logo */}
                 <div className="pointer-events-auto">
                     <Link href="#top" aria-label="Home" className="inline-flex items-center">
                         <div
-                            className="h-12 flex items-center font-mono text-sm tracking-[0.22em] text-white cursor-pointer"
+                            className="h-12 flex items-center font-sans text-[length:var(--fs-h2)] tracking-[0.14em] text-white cursor-pointer"
                             onMouseEnter={handleLogoMouseEnter}
                             onMouseLeave={handleLogoMouseLeave}
                         >
-                            <span>{leftText}</span>
-                            <span>{rightText}</span>
+                            <span
+                                style={isCompactLogo ? { fontFamily: "\"Roboto\", var(--font-sans-stack)" } : undefined}
+                                className={
+                                    leftText === "\\"
+                                        ? `relative -top-[3px] md:-top-[px] lg:top-0 inline-block leading-none scale-y-[0.90] -mr-[0.09em] ${isCompactLogo ? "text-[length:calc(var(--fs-counter)*0.92)] font-bold" : ""}`
+                                        : "leading-none"
+                                }
+                            >
+                                {leftText}
+                            </span>
+                            <span
+                                style={isCompactLogo ? { fontFamily: "\"Roboto\", var(--font-sans-stack)" } : undefined}
+                                className={isCompactLogo ? "leading-none text-[length:var(--fs-counter)] font-bold" : "leading-none"}
+                            >
+                                {rightText}
+                            </span>
                             {cursorVisible && (
                                 <BlinkingCursor className="ml-[0.1em]" />
                             )}
@@ -122,15 +137,16 @@ export default function FixedChrome() {
                 </div>
 
                 {/* Contact */}
-                <div className="pointer-events-auto flex items-center gap-3 text-xs tracking-[0.2em] text-white/80">
+                <div className="pointer-events-auto h-auto mt-2 md:mt-0 flex flex-col items-end justify-start gap-y-3 md:flex-row md:items-center md:gap-y-0 md:gap-x-2 text-[length:var(--fs-body-sm)] tracking-[0.2em] text-white/60">
                     <a
                         href="mailto:hello@vasileioskefalas.com"
                         className="hover:text-white transition glitch-hover"
                         data-text="CONTACT"
                     >
-                        CONTACT
+                        <span className="md:hidden">@</span>
+                        <span className="hidden md:inline">CONTACT</span>
                     </a>
-                    <span className="text-white/30">/</span>
+                    <span className="hidden text-white/30 md:inline">\</span>
                     <a
                         href="https://www.linkedin.com/in/kefalasvasileios/"
                         target="_blank"
@@ -138,9 +154,10 @@ export default function FixedChrome() {
                         className="hover:text-white transition glitch-hover"
                         data-text="Linkedin"
                     >
-                        Linkedin
+                        <span className="md:hidden">li</span>
+                        <span className="hidden md:inline">Linkedin</span>
                     </a>
-                    <span className="text-white/30">/</span>
+                    <span className="hidden text-white/30 md:inline">\</span>
                     <a
                         href="https://github.com/vkef"
                         target="_blank"
@@ -148,14 +165,15 @@ export default function FixedChrome() {
                         className="hover:text-white transition glitch-hover"
                         data-text="Github"
                     >
-                        Github
+                        <span className="md:hidden">gh</span>
+                        <span className="hidden md:inline">Github</span>
                     </a>
                 </div>
             </div>
 
             {/* Copyright */}
-            <div className="pointer-events-auto absolute bottom-6 left-6">
-                <span className="block text-xs tracking-[0.25em] text-white/60 [writing-mode:vertical-rl] rotate-180">
+            <div className="pointer-events-auto absolute bottom-4 left-4 md:bottom-6 md:left-6">
+                <span className="block text-[length:var(--fs-ui)] tracking-[0.25em] text-white/60 [writing-mode:vertical-rl] rotate-180">
                     COPYRIGHT © {new Date().getFullYear()}
                 </span>
             </div>

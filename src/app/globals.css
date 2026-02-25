@@ -44,6 +44,12 @@
   --background: #ffffff;
   --foreground: #171717;
   --font-sans-stack: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --fs-body: clamp(15px, 14.2px + 0.25vw, 17px);
+  --fs-body-sm: clamp(14px, 12.857px + 0.357vw, 18px);
+  --fs-ui: clamp(11px, 10.6px + 0.2vw, 13px);
+  --fs-h1: clamp(36px, 28px + 3.6vw, 72px);
+  --fs-h2: clamp(22px, 18px + 1.25vw, 36px);
+  --fs-counter: clamp(30px, 26px + 1.8vw, 44px);
 }
 
 @theme inline {
@@ -64,6 +70,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: "Space Grotesk Local", var(--font-sans-stack);
+  font-size: var(--fs-body);
 }
 
 html {
