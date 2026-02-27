@@ -36,8 +36,9 @@ export function MatrixOverlay({ scale = 1, ...props }: any) {
     useFrame((state) => {
         if (!ctx || !textureRef.current) return;
         const color = "#2a8a73";
-        const updateCount = Math.floor((rows * cols) * 0.07);
         const time = state.clock.elapsedTime;
+
+        const updateCount = Math.floor((rows * cols) * 0.07);
         const scan = (time * 40) % canvas.height;
         const isNoisy = time < noiseUntil.current;
 

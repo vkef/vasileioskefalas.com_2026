@@ -138,10 +138,10 @@ export default function FixedChrome() {
                 </div>
 
                 {/* Contact */}
-                <div className="pointer-events-auto h-auto mt-2 md:mt-0 flex flex-col items-end justify-start gap-y-3 md:flex-row md:items-center md:gap-y-0 md:gap-x-2 text-[length:var(--fs-body-sm)] tracking-[0.2em] text-white/60">
+                <div className="pointer-events-auto h-auto mt-2 md:mt-0 flex flex-col items-end justify-start gap-y-4 md:flex-row md:items-center md:gap-y-0 md:gap-x-2 text-[length:var(--fs-body)] md:text-[length:var(--fs-body-sm)] tracking-[0.2em] text-white/60">
                     <a
                         href="mailto:hello@vasileioskefalas.com"
-                        className="hover:text-white transition glitch-hover"
+                        className="contact-link hover:text-white transition glitch-hover"
                         data-text="CONTACT"
                     >
                         <span className="md:hidden">@</span>
@@ -152,7 +152,7 @@ export default function FixedChrome() {
                         href="https://www.linkedin.com/in/kefalasvasileios/"
                         target="_blank"
                         rel="noreferrer"
-                        className="hover:text-white transition glitch-hover"
+                        className="contact-link hover:text-white transition glitch-hover"
                         data-text="Linkedin"
                     >
                         <span className="md:hidden">li</span>
@@ -163,7 +163,7 @@ export default function FixedChrome() {
                         href="https://github.com/vkef"
                         target="_blank"
                         rel="noreferrer"
-                        className="hover:text-white transition glitch-hover"
+                        className="contact-link hover:text-white transition glitch-hover"
                         data-text="Github"
                     >
                         <span className="md:hidden">gh</span>

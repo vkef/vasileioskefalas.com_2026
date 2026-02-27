@@ -77,6 +77,12 @@ html {
   scroll-behavior: smooth;
 }
 
+html.loader-lock,
+body.loader-lock {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -144,6 +150,20 @@ canvas {
   body,
   canvas {
     cursor: auto !important;
+  }
+
+  .contact-link {
+    transition: none !important;
+  }
+
+  .contact-link:hover {
+    color: inherit !important;
+  }
+
+  .contact-link.glitch-hover[data-text]::before,
+  .contact-link.glitch-hover[data-text]::after {
+    content: none !important;
+    animation: none !important;
   }
 }
 
@@ -223,7 +243,8 @@ canvas {
     background-size: 100% 3px, 3px 3px;
   }
 
-  .tv-screen:hover::before {
+  .tv-screen:hover::before,
+  .tv-screen.tv-screen--active::before {
     opacity: 1;
     animation:
       tv-glitch-noise 0.18s steps(2, end) infinite,

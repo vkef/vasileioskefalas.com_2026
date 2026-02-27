@@ -6,8 +6,23 @@ export default function TvImage({ src, alt }: { src: string; alt: string }) {
     const wrapperRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const rafRef = useRef<number | null>(null);
+    const touchDeactivateTimeoutRef = useRef<number | null>(null);
     const lastDrawRef = useRef(0);
     const [hovered, setHovered] = useState(false);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        setIsTouchDevice(window.matchMedia("(hover: none), (pointer: coarse)").matches);
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            if (touchDeactivateTimeoutRef.current) {
+                window.clearTimeout(touchDeactivateTimeoutRef.current);
+            }
+        };
+    }, []);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -91,9 +106,44 @@ export default function TvImage({ src, alt }: { src: string; alt: string }) {
     return (
         <div
             ref={wrapperRef}
-            className="tv-screen relative aspect-square w-full overflow-hidden origin-bottom-right md:scale-[1.2]"
-            onPointerEnter={() => setHovered(true)}
-            onPointerLeave={() => setHovered(false)}
+            className={`tv-screen relative aspect-square w-full overflow-hidden origin-bottom-right md:scale-[1.2] ${hovered ? "tv-screen--active" : ""}`}
+            onPointerEnter={(e) => {
+                if (e.pointerType === "mouse") setHovered(true);
+            }}
+            onPointerLeave={(e) => {
+                if (e.pointerType === "mouse") setHovered(false);
+            }}
+            onPointerDown={(e) => {
+                if (isTouchDevice || e.pointerType === "touch") {
+                    if (touchDeactivateTimeoutRef.current) {
+                        window.clearTimeout(touchDeactivateTimeoutRef.current);
+                        touchDeactivateTimeoutRef.current = null;
+                    }
+                    setHovered(true);
+                }
+            }}
+            onPointerUp={(e) => {
+                if (isTouchDevice || e.pointerType === "touch") {
+                    if (touchDeactivateTimeoutRef.current) {
+                        window.clearTimeout(touchDeactivateTimeoutRef.current);
+                    }
+                    touchDeactivateTimeoutRef.current = window.setTimeout(() => {
+                        setHovered(false);
+                        touchDeactivateTimeoutRef.current = null;
+                    }, 1000);
+                }
+            }}
+            onPointerCancel={(e) => {
+                if (isTouchDevice || e.pointerType === "touch") {
+                    if (touchDeactivateTimeoutRef.current) {
+                        window.clearTimeout(touchDeactivateTimeoutRef.current);
+                    }
+                    touchDeactivateTimeoutRef.current = window.setTimeout(() => {
+                        setHovered(false);
+                        touchDeactivateTimeoutRef.current = null;
+                    }, 1000);
+                }
+            }}
         >
             <img src={src} alt={alt} className="tv-screen__image h-full w-full object-cover" />
             <canvas ref={canvasRef} className="tv-noise pointer-events-none absolute inset-0" />

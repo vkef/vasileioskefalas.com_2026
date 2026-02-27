@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 import * as THREE from "three";
-import { useMemo, useContext, createContext, useRef } from "react";
+import { useMemo, useContext, createContext, useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import {
     useGLTF,
@@ -787,6 +787,28 @@ function ScreenText({ invert, x = 0, y = 1.2, ...props }) {
 
 /* Renders a monitor with a matrix overlay */
 function ScreenInteractive(props) {
+    const [hasScrolled, setHasScrolled] = useState(false);
+    const SCROLL_TRIGGER_PX = 40;
+
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+
+        if (window.scrollY > SCROLL_TRIGGER_PX) {
+            setHasScrolled(true);
+            return;
+        }
+
+        const onFirstScroll = () => {
+            if (window.scrollY > SCROLL_TRIGGER_PX) {
+                setHasScrolled(true);
+                window.removeEventListener("scroll", onFirstScroll);
+            }
+        };
+
+        window.addEventListener("scroll", onFirstScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onFirstScroll);
+    }, []);
+
     return (
         <Screen {...props}>
             <PerspectiveCamera
@@ -795,11 +817,33 @@ function ScreenInteractive(props) {
                 aspect={1 / 1}
                 position={[0, 0, 10]}
             />
-            <color attach="background" args={["red"]} />
+            <color attach="background" args={["black"]} />
             <ambientLight intensity={Math.PI / 2} />
             <pointLight decay={0} position={[10, 10, 10]} intensity={Math.PI} />
             <pointLight decay={0} position={[-10, -10, -10]} />
-            <MatrixOverlay position={[0, 0, 0]} scale={1} />
+            {!hasScrolled ? (
+                <>
+                    <Text
+                        fontSize={0.7}
+                        letterSpacing={0.02}
+                        position={[-3.6, 1.4, -1.47]}
+                        scale={0.9}
+                        color="#00000"
+                    >
+                        SCROLL
+                    </Text>
+                    <Text
+                        position={[-3.4, 0.5, -1.47]}
+                        fontSize={0.7}
+                        scale={0.9}
+                        color="#00000"
+                    >
+                        DOWN
+                    </Text>
+                </>
+            ) : (
+                <MatrixOverlay position={[0, 0, 0]} scale={1} />
+            )}
         </Screen>
     );
 }

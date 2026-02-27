@@ -17,10 +17,9 @@ function formatLogInTime(date: Date) {
 
 function getClientInfo() {
   if (typeof window === "undefined") return null;
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "Unknown";
 
   return [
-    `logintime: ${formatLogInTime(new Date())} | ${timeZone}`,
+    `logintime: ${formatLogInTime(new Date())}`,
   ];
 }
 
@@ -36,7 +35,7 @@ export default function LoaderOverlay() {
     const [isPausedBetweenLines, setIsPausedBetweenLines] = useState(false);
 
     const [terminalLines, setTerminalLines] = useState<string[]>([]);
-    const TYPE_SPEED_MS = 8;
+    const TYPE_SPEED_MS = 7;
     const FIRST_LINE_TYPE_SPEED_MS = 6;
     const LINE_PAUSE_MS = 1000;
 
@@ -47,6 +46,31 @@ export default function LoaderOverlay() {
         ...STATIC_LINES,
       ]);
     }, []);
+
+    useEffect(() => {
+      const html = document.documentElement;
+      const body = document.body;
+
+      const forceUnlock = () => {
+        html.classList.remove("loader-lock");
+        body.classList.remove("loader-lock");
+        html.style.overflow = "";
+        body.style.overflow = "";
+        html.style.overscrollBehavior = "";
+        body.style.overscrollBehavior = "";
+      };
+
+      if (visible) {
+        html.classList.add("loader-lock");
+        body.classList.add("loader-lock");
+      } else {
+        forceUnlock();
+      }
+
+      return () => {
+        forceUnlock();
+      };
+    }, [visible]);
 
     // --- typing effect ---
     useEffect(() => {
@@ -97,7 +121,7 @@ export default function LoaderOverlay() {
     if (!visible) return null;
 
     return (
-        <div className="fixed inset-0 z-[20000] bg-black text-[#c8ffdf] font-sans text-[length:var(--fs-body-sm)] tracking-wide">
+        <div className="fixed inset-0 z-[20000] overscroll-none touch-none bg-black text-[#c8ffdf] font-sans text-[length:var(--fs-body-sm)] tracking-wide">
             <div className="p-6 space-y-1">
                 {lines.map((line, i) => {
                   const isLastCommittedLine = i === lines.length - 1;
