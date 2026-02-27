@@ -2,7 +2,8 @@ name: Build and publish static site to deploy branch
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -32,4 +33,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: deploy
           publish_dir: ./out
-          force_orphan: true
