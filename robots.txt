@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+
+Host: https://vasileioskefalas.com
+Sitemap: https://vasileioskefalas.com/sitemap.xml
