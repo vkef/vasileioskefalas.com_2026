@@ -39,20 +39,54 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  const personJsonLd = {
+  const structuredData = {
     "@context": "https://schema.org",
-    "@type": "Person",
-    name: "Vasileios Kefalas",
-    url: siteUrl,
-    image: `${siteUrl}/vasileioskefalas.png`,
-    jobTitle: "Full Stack Developer",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        url: siteUrl,
+        name: "Vasileios Kefalas",
+        description:
+          "Portfolio of Vasileios Kefalas, full stack developer.",
+        inLanguage: "en-US",
+      },
+      {
+        "@type": "Person",
+        "@id": `${siteUrl}/#person`,
+        name: "Vasileios Kefalas",
+        url: siteUrl,
+        image: `${siteUrl}/vasileioskefalas.png`,
+        jobTitle: "Full Stack Developer",
+        description:
+          "Full stack developer focused on modern web applications, frontend engineering, and technical support.",
+        email: "hello@vasileioskefalas.com",
+        sameAs: [
+          "https://github.com/vkef",
+          "https://www.linkedin.com/in/kefalasvasileios/",
+        ],
+        knowsAbout: [
+          "JavaScript",
+          "TypeScript",
+          "React",
+          "Next.js",
+          "Node.js",
+          "PowerShell",
+          "Technical Support",
+          "IT Support",
+        ],
+        mainEntityOfPage: {
+          "@id": `${siteUrl}/#website`,
+        },
+      },
+    ],
   };
 
   return (
       <main id="top" className="relative">
           <script
               type="application/ld+json"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
           />
           <LoaderOverlay />
           {/* Hero */}
