@@ -6,11 +6,11 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Vasileios Kefalas",
     short_name: "VK",
-    description: "Portfolio of Vasileios Kefalas, full stack developer.",
+    description: "Portfolio of Vasileios Kefalas, Full Stack Developer.",
     start_url: "/",
     display: "standalone",
-    background_color: "#000000",
-    theme_color: "#000000",
+    background_color: "#0a0a0a",
+    theme_color: "#0a0a0a",
     icons: [
       {
         src: "/logoico.ico",
