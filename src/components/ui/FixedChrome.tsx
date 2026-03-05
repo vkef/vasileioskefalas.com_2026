@@ -118,7 +118,7 @@ export default function FixedChrome() {
                                 style={isCompactLogo ? { fontFamily: "\"Roboto\", var(--font-sans-stack)" } : undefined}
                                 className={
                                     leftText === "\\"
-                                        ? `relative  top-[-2px] md:top-[-3px] inline-block leading-none scale-y-[0.92] -mr-[0.02em] ${isCompactLogo ? "text-[length:calc(var(--fs-h1)*0.92)] font-bold logo-dithered" : ""}`
+                                        ? `relative  top-[-2px] md:top-[-4px] inline-block leading-none scale-y-[0.92] -mr-[0.02em] ${isCompactLogo ? "text-[length:calc(var(--fs-h1)*0.92)] font-bold logo-dithered" : ""}`
                                         : "leading-none"
                                 }
                             >
@@ -155,7 +155,7 @@ export default function FixedChrome() {
                         className="contact-link hover:text-white transition glitch-hover"
                         data-text="Linkedin"
                     >
-                        <span className="md:hidden">li</span>
+                        <span className="md:hidden">in</span>
                         <span className="hidden md:inline">Linkedin</span>
                     </a>
                     <span className="hidden text-white/30 md:inline">\</span>
